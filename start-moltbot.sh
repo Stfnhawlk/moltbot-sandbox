@@ -274,10 +274,12 @@ if (isOpenAI) {
     config.agents.defaults.models['anthropic/claude-sonnet-4-5-20250929'] = { alias: 'Sonnet 4.5' };
     config.agents.defaults.models['anthropic/claude-haiku-4-5-20251001'] = { alias: 'Haiku 4.5' };
     config.agents.defaults.model.primary = 'anthropic/claude-opus-4-5-20251101';
-} else {
+} else if (!config.agents.defaults.model.primary) {
     // Default to Anthropic without custom base URL (uses built-in pi-ai catalog)
+    // Only set default if no primary model is already configured
     config.agents.defaults.model.primary = 'anthropic/claude-opus-4-5';
 }
+// else: keep existing model.primary from config/backup
 
 // Write updated config
 fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
